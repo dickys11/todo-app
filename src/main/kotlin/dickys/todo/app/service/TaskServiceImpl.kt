@@ -4,6 +4,7 @@ import dickys.todo.app.entity.Task
 import dickys.todo.app.helper.error.NotFoundException
 import dickys.todo.app.model.request.CreateTaskRequest
 import dickys.todo.app.model.request.ListTaskRequest
+import dickys.todo.app.model.request.UpdateTaskRequest
 import dickys.todo.app.model.response.TaskResponse
 import dickys.todo.app.repository.TaskRepository
 import org.springframework.data.domain.PageRequest
@@ -37,6 +38,20 @@ class TaskServiceImpl(val taskRepository: TaskRepository): TaskService {
         val task = findTaskById(id)
         return generateTaskResponse(task)
     }
+
+    override fun update(id: Int, request: UpdateTaskRequest): TaskResponse {
+        val task = findTaskById(id)
+
+        task.apply {
+            name = request.name!!
+            description = request.description
+        }
+
+        taskRepository.save(task)
+
+        return generateTaskResponse(task)
+    }
+
 
     private fun findTaskById(id: Int): Task {
         return taskRepository.findByIdOrNull(id) ?: throw NotFoundException()
