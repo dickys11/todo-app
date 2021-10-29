@@ -2,12 +2,11 @@ package dickys.todo.app.controller
 
 import dickys.todo.app.model.WebResponse
 import dickys.todo.app.model.request.CreateTaskRequest
+import dickys.todo.app.model.request.ListTaskRequest
 import dickys.todo.app.model.response.TaskResponse
 import dickys.todo.app.service.TaskService
 import org.springframework.http.MediaType
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 class TaskController(val taskService: TaskService) {
@@ -26,6 +25,24 @@ class TaskController(val taskService: TaskService) {
             code = 200,
             status = "OK",
             data = taskResponse
+        )
+    }
+
+    @GetMapping(
+        value = ["/api/task"],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    fun listTask(
+        @RequestParam(value = "size", defaultValue = "10") size: Int,
+        @RequestParam(value = "page", defaultValue = "0") page: Int
+    ): WebResponse<List<TaskResponse>> {
+        val request = ListTaskRequest(page = page, size = size)
+        val tasksResponse = taskService.list(request)
+
+        return WebResponse(
+            code = 200,
+            status = "OK",
+            data = tasksResponse
         )
     }
 }
