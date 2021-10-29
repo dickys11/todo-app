@@ -45,6 +45,7 @@ class TaskServiceImpl(
     }
 
     override fun update(id: Int, request: UpdateTaskRequest): TaskResponse {
+        validationUtil.validate(request)
         val task = findTaskById(id)
 
         task.apply {
