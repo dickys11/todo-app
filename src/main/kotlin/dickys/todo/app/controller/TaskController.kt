@@ -45,4 +45,20 @@ class TaskController(val taskService: TaskService) {
             data = tasksResponse
         )
     }
+
+    @GetMapping(
+        value = ["/api/task/{taskId}"],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    fun getTask(
+        @PathVariable("taskId") taskId: Int
+    ): WebResponse<TaskResponse>{
+        val taskResponse = taskService.get(taskId)
+
+        return WebResponse(
+            code = 200,
+            status = "OK",
+            data = taskResponse
+        )
+    }
 }
