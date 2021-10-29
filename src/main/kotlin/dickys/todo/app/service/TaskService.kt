@@ -9,4 +9,6 @@ interface TaskService {
     fun create(request: CreateTaskRequest): TaskResponse
 
     fun list(request: ListTaskRequest): List<TaskResponse>
+
+    fun get(id: Int): TaskResponse
 }

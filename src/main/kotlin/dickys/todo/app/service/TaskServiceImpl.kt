@@ -1,11 +1,13 @@
 package dickys.todo.app.service
 
 import dickys.todo.app.entity.Task
+import dickys.todo.app.helper.error.NotFoundException
 import dickys.todo.app.model.request.CreateTaskRequest
 import dickys.todo.app.model.request.ListTaskRequest
 import dickys.todo.app.model.response.TaskResponse
 import dickys.todo.app.repository.TaskRepository
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.util.stream.Collectors
 
@@ -29,6 +31,15 @@ class TaskServiceImpl(val taskRepository: TaskRepository): TaskService {
         val tasks: List<Task> = page.get().collect(Collectors.toList())
 
         return tasks.map { generateTaskResponse(it) }
+    }
+
+    override fun get(id: Int): TaskResponse {
+        val task = findTaskById(id)
+        return generateTaskResponse(task)
+    }
+
+    private fun findTaskById(id: Int): Task {
+        return taskRepository.findByIdOrNull(id) ?: throw NotFoundException()
     }
 
     private fun generateTaskResponse(task: Task): TaskResponse{
