@@ -3,6 +3,7 @@ package dickys.todo.app.controller
 import dickys.todo.app.model.WebResponse
 import dickys.todo.app.model.request.CreateTaskRequest
 import dickys.todo.app.model.request.ListTaskRequest
+import dickys.todo.app.model.request.UpdateTaskRequest
 import dickys.todo.app.model.response.TaskResponse
 import dickys.todo.app.service.TaskService
 import org.springframework.http.MediaType
@@ -54,6 +55,24 @@ class TaskController(val taskService: TaskService) {
         @PathVariable("taskId") taskId: Int
     ): WebResponse<TaskResponse>{
         val taskResponse = taskService.get(taskId)
+
+        return WebResponse(
+            code = 200,
+            status = "OK",
+            data = taskResponse
+        )
+    }
+
+    @PutMapping(
+        value = ["/api/task/{taskId}"],
+        produces = [MediaType.APPLICATION_JSON_VALUE],
+        consumes = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    fun updateTask(
+        @PathVariable("taskId") taskId: Int,
+        @RequestBody updateTaskRequest: UpdateTaskRequest
+    ): WebResponse<TaskResponse> {
+        val taskResponse = taskService.update(taskId, updateTaskRequest)
 
         return WebResponse(
             code = 200,
