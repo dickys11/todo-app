@@ -2,6 +2,7 @@ package dickys.todo.app.service
 
 import dickys.todo.app.entity.Task
 import dickys.todo.app.helper.error.NotFoundException
+import dickys.todo.app.helper.validation.ValidationUtil
 import dickys.todo.app.model.request.CreateTaskRequest
 import dickys.todo.app.model.request.ListTaskRequest
 import dickys.todo.app.model.request.UpdateTaskRequest
@@ -14,8 +15,12 @@ import java.util.stream.Collectors
 
 
 @Service
-class TaskServiceImpl(val taskRepository: TaskRepository): TaskService {
+class TaskServiceImpl(
+    val taskRepository: TaskRepository,
+    val validationUtil: ValidationUtil):
+    TaskService {
     override fun create(request: CreateTaskRequest): TaskResponse {
+        validationUtil.validate(request)
         val task = Task(
             name = request.name,
             description = request.description
