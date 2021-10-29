@@ -12,7 +12,7 @@ data class Task(
     var id : Int? = null,
 
     @Column(name = "task_name")
-    var name : String,
+    var name : String?,
 
     @Column(name = "task_description")
     var description: String? = null,
