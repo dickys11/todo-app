@@ -52,6 +52,11 @@ class TaskServiceImpl(val taskRepository: TaskRepository): TaskService {
         return generateTaskResponse(task)
     }
 
+    override fun delete(id: Int) {
+        val task = findTaskById(id)
+        taskRepository.delete(task)
+    }
+
 
     private fun findTaskById(id: Int): Task {
         return taskRepository.findByIdOrNull(id) ?: throw NotFoundException()

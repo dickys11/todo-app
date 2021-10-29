@@ -14,4 +14,6 @@ interface TaskService {
     fun get(id: Int): TaskResponse
 
     fun update(id: Int, request: UpdateTaskRequest): TaskResponse
+
+    fun delete(id: Int)
 }
