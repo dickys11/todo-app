@@ -80,4 +80,20 @@ class TaskController(val taskService: TaskService) {
             data = taskResponse
         )
     }
+
+    @DeleteMapping(
+        value = ["/api/task/{taskId}"],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    fun deleteTask(
+        @PathVariable("taskId") taskId: Int
+    ): WebResponse<Int> {
+        taskService.delete(taskId)
+
+        return WebResponse(
+            code = 200,
+            status = "OK",
+            data = taskId
+        )
+    }
 }
